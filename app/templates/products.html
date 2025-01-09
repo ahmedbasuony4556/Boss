@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block title %}Contact Us - FashionHub{% endblock %}
+{% block extra_css %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+
+    .cart-icon {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #ff4444;
+        color: white;
+        border-radius: 50%;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .main-content {
+        max-width: 1200px;
+        margin: 6rem auto 2rem;
+        padding: 1rem;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .product-info {
+        padding: 1rem;
+    }
+
+    .product-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-price {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin: 0.5rem 0;
+    }
+
+    .product-category {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        background: #e0e0e0;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        margin: 0.5rem 0;
+    }
+
+    .add-to-cart {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.3s;
+    }
+
+    .add-to-cart:hover {
+        background: #2980b9;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<main class="main-content">
+    <h1>Latest Products</h1>
+    <div class="products-grid">
+        <!-- Products will be dynamically inserted here -->
+    </div>
+    <button id="checkout-button">Checkout</button>
+</main>
+{% endblock %}
+{% block scripts %}
+<script>
+    // Define the products array
+    const products = [
+        { id: 1, name: "Men's Jeans Jacket", price: 49.99, image: "{{ url_for('static', filename='images/p8.jpg') }}", description: "Stylish and durable men's jeans jacket.", category: "Men's Wear" },
+        { id: 2, name: "Men's Sweatshirt", price: 29.99, image: "{{ url_for('static', filename='images/p4.jpg') }}", description: "Comfortable and cozy men's sweatshirt.", category: "Men's Wear" },
+        { id: 3, name: "Men's Sport Jacket", price: 59.99, image: "{{ url_for('static', filename='images/p5.jpg') }}", description: "Perfect for outdoor activities.", category: "Men's Wear" },
+        { id: 4, name: "Women's Puffer Jacket", price: 79.99, image: "{{ url_for('static', filename='images/p7.jpg') }}", description: "Stay warm and stylish this winter.", category: "Women's Wear" },
+        { id: 5, name: "Women's Sport Jacket", price: 69.99, image: "{{ url_for('static', filename='images/p2.jpg') }}", description: "Comfortable and flexible for workouts.", category: "Women's Wear" },
+        { id: 6, name: "Women's Sweatshirt", price: 39.99, image: "{{ url_for('static', filename='images/p6.jpg') }}", description: "Soft and casual women's sweatshirt.", category: "Women's Wear" },
+        { id: 7, name: "Women's Sweater", price: 29.99, image: "{{ url_for('static', filename='images/n8.jpg') }}", description: "Relax in style with these sweater.", category: "Women's Wear" },
+        { id: 8, name: "Men's Sport Socks", price: 9.99, image: "{{ url_for('static', filename='images/n5.jpg') }}", description: "Comfortable and breathable sport socks.", category: "Men's Wear" }
+    ];
+
+    const productsGrid = document.querySelector('.products-grid');
+
+    // Retrieve cart from localStorage or initialize an empty array
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Function to render products dynamically
+    function renderProducts() {
+        productsGrid.innerHTML = products.map(product => `
+            <div class="product-card" data-id="${product.id}">
+                <img src="${product.image}" alt="${product.name}" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p>${product.description}</p>
+                    <span class="product-category">${product.category}</span>
+                    <p class="product-price">${product.price.toFixed(2)} LE</p>
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Function to add a product to the cart
+    function addToCart(productId) {
+        const product = products.find(item => item.id === productId);
+        if (product) {
+            cart.push(product); // Add product to cart
+            localStorage.setItem('cart', JSON.stringify(cart)); // Save cart to localStorage
+            updateCartCount();
+            alert(`${product.name} has been added to the cart.`);
+        }
+    }
+
+    // Function to update the cart count in the header
+    function updateCartCount() {
+        const cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+            cartCount.textContent = cart.length;
+        }
+    }
+
+    // Checkout function to display the bill and clear the cart
+    function checkout() {
+        if (cart.length === 0) {
+            alert("Your cart is empty.");
+            return;
+        }
+
+        const totalPrice = cart.reduce((sum, item) => sum + item.price, 0); // Corrected price calculation
+        alert(`Your bill is: ${totalPrice.toFixed(2)} LE`);
+
+        // Clear the cart from localStorage and the page
+        localStorage.removeItem('cart');
+        cart = [];
+        updateCartCount();
+    }
+
+    // Initial render of products and cart count
+    document.addEventListener('DOMContentLoaded', () => {
+        renderProducts();
+        updateCartCount();
+
+        // Attach the checkout function to the button
+        const checkoutButton = document.getElementById('checkout-button');
+        if (checkoutButton) {
+            checkoutButton.addEventListener('click', checkout);
+        }
+    });
+</script>
+{% endblock %}

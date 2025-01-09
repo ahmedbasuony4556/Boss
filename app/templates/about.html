@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}About Us - FashionHub{% endblock %}
+{%block extra_css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}">
+{%endblock%}
+{%block content%}
+    <h1>About Us</h1>
+    <div class="about-container">
+        <section class="mission">
+            <h2>Our Mission</h2>
+            <p>At Clothing Shop, our mission is to provide the latest and greatest in Fashion to our customers. We strive to offer top-notch customer service and a wide selection of Cloths to meet all your needs.</p>
+        </section>
+        <section class="history">
+            <h2>Our History</h2>
+            <p>Founded in 2010, Clothing store has grown from a small local shop to a leading online retailer of Cloths and Fashons. Over the years, we have expanded our product range, improved our customer service, and developed a loyal customer base.</p>
+        </section>
+        <section class="values">
+            <h2>Our Values</h2>
+            <ul>
+                <li>Customer Satisfaction</li>
+                <li>Innovation</li>
+                <li>Integrity</li>
+                <li>Quality</li>
+            </ul>
+        </section>
+        <section class="locations">
+            <h2>Our Locations</h2>
+            <div class="location-card">
+                <div class="location-header Maadi"></div>
+                <div class="location-body">
+                    <h3>Maadi</h3>
+                    <p>123 FashionHub, Qesm Dar El Salam, Cairo</p>
+                </div>
+            </div>
+            <div class="location-card">
+                <div class="location-header October"></div>
+                <div class="location-body">
+                    <h3>6th of october</h3>
+                    <p>123 FashionHub, Qesm awl October , Giza</p>
+                </div>
+            </div>
+            <div class="location-card">
+                <div class="location-header New Cairo"></div>
+                <div class="location-body">
+                    <h3>madinaty</h3>
+                    <p>123 FashionHub, Qesm awl tagamo3 , New Cairo</p>
+                </div>
+            </div>
+        </section>
+    </div>
+{%endblock%}
+{% block scripts %}    
+<script src="{{ url_for('static', filename='js/about.js') }}"></script>
+{% endblock %}

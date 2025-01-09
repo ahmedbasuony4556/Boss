@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Sign Up - MobileStore{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1><a href="{{ url_for('bp.home') }}">Home</a></h1>
+    <h2>Sign Up</h2>
+    <form id="signUpForm">
+        <label for="username">Username:</label>
+        <div class="input-container">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" name="username" required>
+        </div>
+
+        <label for="email">Email:</label>
+        <div class="input-container">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <label for="telephone">Telephone:</label>
+        <div class="input-container">
+            <i class="fas fa-phone"></i>
+            <input type="tel" id="telephone" name="telephone" required>
+        </div>
+
+        <label for="country">Country:</label>
+        <div class="input-container">
+            <i class="fas fa-globe"></i>
+            <input type="text" id="country" name="country" required>
+        </div>
+
+        <label for="password">Password:</label>
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" name="password" required>
+            <button type="button" id="togglePassword">👁️</button>
+        </div>
+
+        <button type="submit">Sign Up</button>
+        <br>
+        <a href="{{ url_for('bp.login') }}">Already have an account?</a>
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/signup.js') }}"></script>
+{% endblock %}

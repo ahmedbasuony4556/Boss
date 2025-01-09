@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block title %}Rate - FashionHub{% endblock %}
+{%block extra_css%}
+    <style>
+        /* Rate Page Specific Styles */
+    .rating-container {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        max-width: 500px;
+        width: 90%;
+        margin: 2rem auto;
+        text-align: center;
+    }
+
+    .store-header h1 {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .store-header p {
+        font-size: 1rem;
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .stars {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .star {
+        font-size: 2.5rem;
+        color: var(--medium-gray);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .star.active {
+        color: var(--accent-color);
+    }
+
+    textarea {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        color: var(--text-color);
+        border: 1px solid var(--medium-gray);
+        border-radius: 8px;
+        background-color: var(--light-gray);
+        resize: none;
+        margin-bottom: 1rem;
+        transition: var(--transition);
+    }
+
+    textarea:focus {
+        border-color: var(--primary-color);
+        background-color: white;
+        outline: none;
+    }
+
+    button#submitRating {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    button#submitRating:hover {
+        background-color: var(--accent-color);
+    }
+
+    button#submitRating:disabled {
+        background-color: var(--medium-gray);
+        cursor: not-allowed;
+    }
+
+    .success-message {
+        display: none;
+        font-size: 1rem;
+        color: var(--secondary-color);
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 480px) {
+        .rating-container {
+            padding: 1.5rem;
+        }
+
+        .store-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .stars .star {
+            font-size: 2rem;
+        }
+    }
+    </style>
+{%endblock%}    
+{%block content %}
+    <div class="rating-container">
+        <div class="store-header">
+            <h1>Rate Your Experience</h1>
+            <p>How was your shopping experience at our Clothing shop?</p>
+        </div>
+
+        <div class="stars">
+            <span class="star" data-rating="1">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="5">★</span>
+        </div>
+
+        <textarea placeholder="Tell us about your experience (optional)"></textarea>
+
+        <button id="submitRating" disabled>Submit Rating</button>
+
+        <div class="success-message">
+            Thank you for your feedback!
+        </div>
+    </div>
+{%endblock%}
+{%block scripts %}
+    <script>
+        const stars = document.querySelectorAll('.star');
+        const submitButton = document.getElementById('submitRating');
+        const successMessage = document.querySelector('.success-message');
+        let currentRating = 0;
+
+        // Handle star rating selection
+        stars.forEach(star => {
+            star.addEventListener('mouseover', () => {
+                const rating = parseInt(star.dataset.rating);
+                highlightStars(rating);
+            });
+
+            star.addEventListener('mouseout', () => {
+                highlightStars(currentRating);
+            });
+
+            star.addEventListener('click', () => {
+                currentRating = parseInt(star.dataset.rating);
+                highlightStars(currentRating);
+                submitButton.disabled = false;
+            });
+        });
+
+        // Highlight stars up to the selected rating
+        function highlightStars(rating) {
+            stars.forEach(star => {
+                const starRating = parseInt(star.dataset.rating);
+                star.classList.toggle('active', starRating <= rating);
+            });
+        }
+
+        // Handle form submission
+        submitButton.addEventListener('click', () => {
+            const feedback = document.querySelector('textarea').value;
+
+            // Here you would typically send the rating and feedback to your server
+            console.log('Rating:', currentRating);
+            console.log('Feedback:', feedback);
+
+            // Show success message
+            submitButton.style.display = 'none';
+            successMessage.style.display = 'block';
+
+            // Reset form after 3 seconds
+            setTimeout(() => {
+                currentRating = 0;
+                highlightStars(0);
+                document.querySelector('textarea').value = '';
+                submitButton.disabled = true;
+                submitButton.style.display = 'block';
+                successMessage.style.display = 'none';
+            }, 3000);
+        });
+    </script>
+{%endblock%}

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Your Cart - FashionHub{% endblock %}
+{% block extra_css %}
+<style>
+#cart {
+    margin: 2rem auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    max-width: 800px;
+}
+
+#cart h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+#cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--light-gray);
+    border: 1px solid var(--medium-gray);
+    border-radius: 5px;
+    transition: var(--transition);
+}
+
+.cart-item:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-3px);
+}
+
+.cart-item p {
+    margin: 0;
+    color: var(--text-color);
+}
+
+#cart-total {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--medium-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+#cart-total strong {
+    font-weight: bold;
+}
+
+#checkout {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: var(--transition);
+}
+
+#checkout:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}
+{% block content %}
+    <section id="cart">
+        <h2>Your Cart</h2>
+        <div id="cart-items">
+            <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <div id="cart-total">
+            <p><strong>Total: </strong><span id="total-price">0 LE</span></p>
+            <button id="checkout">Proceed to Checkout</button>
+        </div>
+    </section>
+{% endblock %}
+{% block scripts %}
+<script>
+    // Retrieve cart from localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Function to render cart items
+    function renderCart() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
+        
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+            totalPriceElement.textContent = "0 LE";
+        } else {
+            let totalPrice = 0;
+            cartItemsContainer.innerHTML = cart.map(item => {
+                totalPrice += parseFloat(item.price); // Accumulate total price
+                return `
+                    <div class="cart-item">
+                        <p><strong>${item.name}</strong></p>
+                        <p>${item.price} LE</p>
+                    </div>
+                `;
+            }).join('');  // Render all cart items
+
+            totalPriceElement.textContent = `${totalPrice.toFixed(2)} LE`;
+        }
+    }
+
+    // Checkout function to display the bill and clear the cart
+    function checkout() {
+        if (cart.length === 0) {
+            alert("Your cart is empty.");
+            return;
+        }
+
+        const totalPrice = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+        alert(`Your bill is: ${totalPrice.toFixed(2)} LE`);
+
+        // Clear the cart from localStorage and the page
+        localStorage.removeItem('cart');
+        cart = [];
+        renderCart();  // Re-render cart to reflect the cleared cart
+    }
+
+    // Render the cart on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCart();
+
+        // Attach the checkout function to the button with ID 'checkout'
+        const checkoutButton = document.getElementById('checkout');
+        if (checkoutButton) {
+            checkoutButton.addEventListener('click', checkout);
+        }
+    });
+</script>
+{% endblock %}

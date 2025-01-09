@@ -1,0 +1,222 @@
+/* About Page Container */
+.about-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 3rem;
+    margin: 3rem 0;
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: var(--accent-color);
+}
+
+/* Section Styles */
+section {
+    margin-bottom: 4rem;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-color);
+}
+
+section p {
+    line-height: 1.8;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+/* Values Section */
+.values ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.values li {
+    padding: 1rem;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.values li:hover {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* Locations Section */
+.locations {
+    padding: 2rem;
+}
+
+.locations .location-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.locations .location-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.location-header {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.location-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5));
+}
+
+.location-header.Maadi {
+    background-image: url('../images/maadi.jpg');
+}
+
+.location-header.October {
+    background-image: url('../images/october.jpg');
+}
+
+.location-header.New.Cairo {
+    background-image: url('../images/newcairo.jpg');
+}
+
+.location-body {
+    padding: 1.5rem;
+}
+
+.location-body h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.location-body p {
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+section {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+section:nth-child(1) { animation-delay: 0.1s; }
+section:nth-child(2) { animation-delay: 0.3s; }
+section:nth-child(3) { animation-delay: 0.5s; }
+section:nth-child(4) { animation-delay: 0.7s; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-container {
+        padding: 0 1rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin: 2rem 0;
+    }
+
+    section {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+    }
+
+    .values ul {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .location-header {
+        height: 150px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .about-container {
+        margin: 0;
+        padding: 0;
+    }
+
+    section {
+        break-inside: avoid;
+        box-shadow: none;
+        margin-bottom: 2rem;
+    }
+
+    .location-header {
+        display: none;
+    }
+}
